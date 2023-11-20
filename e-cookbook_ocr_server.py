@@ -11,23 +11,26 @@ app = Flask("__name__")
 @app.route('/extract-text', methods=['POST'])
 def ocr_image():
     if 'photo' not in request.files:
-        return jsonify({"error": "No photo part in the request"}), 400
+        return jsonify({"error": "Wrong parameter"}), 400
     
     photo = request.files['photo']
     if photo.filename == '':
         return jsonify({"error": "No photo selected for uploading"}), 400
     
     if photo:
-        # Convert the image to a format opencv can understand
+        # OpenCV part
+        # Converting the image to a format opencv can understand
         in_memory_file = np.asarray(bytearray(photo.read()), dtype=np.uint8)
         image = cv2.imdecode(in_memory_file, cv2.IMREAD_COLOR)
         
-        # Convert image to gray scale (optional and can be tuned)
+        # Converting image to gray scale (black and white)
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         
-        # Do preprocessing here (optional, e.g., thresholding, noise removal, etc.)
+        # Other preprocessing tasks could come here - future improvements
         
-        # Use tesseract to do OCR on the processed image
+        # Tesseract part
+        # Using tesseract to do OCR on the processed image
+        # Both Hungarian and English texts are recognized
         text = pytesseract.image_to_string(gray_image, lang='hun+eng')
         
         # Return the extracted text as a json response
