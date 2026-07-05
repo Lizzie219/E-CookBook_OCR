@@ -3,10 +3,6 @@ import cv2
 import pytesseract
 import numpy as np
 
-# For this to work, pytesseract executable has to be downloaded from https://github.com/tesseract-ocr/tesseract
-# path of pytesseract - change accordingly
-pytesseract.pytesseract.tesseract_cmd = r'A:\7\Implementation\Tesseract\tesseract.exe'
-
 app = Flask("__name__")
 
 @app.route('/extract-text', methods=['POST'])
